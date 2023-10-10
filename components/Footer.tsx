@@ -1,11 +1,12 @@
+import { footerLinks } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
-import { footerLinks } from "../constants";
+import React from "react";
 
-interface ColumnProps {
+type ColumnProps = {
   title: string;
-  links: string[];
-}
+  links: Array<string>;
+};
 
 const FooterColumn = ({ title, links }: ColumnProps) => (
   <div className="footer_column">
@@ -32,6 +33,7 @@ const Footer = () => {
             share, grow, and get hired.
           </p>
         </div>
+
         <div className="flex flex-wrap gap-12">
           <FooterColumn
             title={footerLinks[0].title}
