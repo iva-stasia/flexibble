@@ -33,6 +33,9 @@ export async function POST(request: Request) {
 
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: error }, { status: 500 });
+    return NextResponse.json(
+      { message: "Failed to upload image on Cloudinary" },
+      { status: 500 }
+    );
   }
 }

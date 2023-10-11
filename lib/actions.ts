@@ -3,6 +3,7 @@ import {
   createProjectMutation,
   createUserMutation,
   getUserQuery,
+  projectsQuery,
 } from "@/graphql";
 import { GraphQLClient } from "graphql-request";
 
@@ -61,12 +62,13 @@ export const uploadImage = async (imagePath: string) => {
   try {
     const response = await fetch(`${serverUrl}/api/upload`, {
       method: "POST",
-      body: JSON.stringify({ path: imagePath }),
+      body: JSON.stringify({
+        path: imagePath,
+      }),
     });
-
     return response.json();
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -75,6 +77,8 @@ export const createNewProject = async (
   creatorId: string,
   token: string
 ) => {
+  console.log("form: ", form);
+
   const imageUrl = await uploadImage(form.image);
 
   if (imageUrl.url) {
@@ -92,4 +96,14 @@ export const createNewProject = async (
 
     return makeGraphQLRequest(createProjectMutation, variables);
   }
+};
+
+export const fetchAllProjects = async (
+  category?: string,
+  endcursor?: string
+) => {
+  client.setHeader("x-api-key", apiKey);
+  console.log(category);
+
+  return makeGraphQLRequest(projectsQuery, { category: "Frontend", endcursor });
 };

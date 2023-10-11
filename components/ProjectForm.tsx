@@ -29,6 +29,34 @@ const ProjectForm = ({ type, session }: Props) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    if (!file.type.includes("image")) {
+      alert("Please upload an image!");
+
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      const result = reader.result as string;
+
+      handleStateChange("image", result);
+    };
+  };
+
+  const handleStateChange = (fieldName: string, value: string) => {
+    setForm((prev) => ({ ...prev, [fieldName]: value }));
+  };
+
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -47,32 +75,6 @@ const ProjectForm = ({ type, session }: Props) => {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-
-    const file = e.target.files?.[0];
-
-    if (!file) return;
-
-    if (!file.type.includes("image")) {
-      return alert("Please upload an image file");
-    }
-
-    const reader = new FileReader();
-
-    reader.readAsDataURL(file);
-
-    reader.onload = () => {
-      const result = reader.result as string;
-
-      handleStateChange("image", result);
-    };
-  };
-
-  const handleStateChange = (fieldName: string, value: string) => {
-    setForm((prev) => ({ ...prev, [fieldName]: value }));
   };
 
   return (
